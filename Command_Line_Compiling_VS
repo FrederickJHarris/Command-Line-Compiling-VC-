@@ -1,0 +1,205 @@
+Command Line Compiling With Visual Studio 2019 (also works with several versions back)
+
+1) Do a usual left-click on Windows Start Menu and scroll down to Visual Studio 2019.  There should be
+   two entries there (at least there are on my installations) for Visual Studio.  On mine, the top entry
+   has a 'drop down' button which reveals several more options, and the bottom one is a single shortcut
+   which starts the Visual Studio IDE (Integrated Development Environment);
+
+2) Don't start the IDE.  Instead, click the top entry's drop down arrow to reveal the other shortcuts.
+   Locate the one that says 'x64 Native Tools Command Prompt for VS 2019'.  Click that one to open a
+   command prompt console window which also configures that environment for x64 builds by the x64 build
+   chain, which involves cl.exe for compiling source files, i.e., *.cpp, *.h, and *.rc files, and link.exe
+   for linking *.obj files created by the compiler;
+
+Let's build Dennis Ritchie's (the creator of C and the Unix operating system) famous Hello, World! program
+from the command line so as to show how straightforward and ridiculously easy it is to build programs from 
+the command line.
+
+First, open Microsoft's Notepad.exe.  We'll use the simplest text editor possible for this, and prove to you
+that it's possible to code without heavyweight IDE's.  If you don't have a shortcut to Notepad on your desktop
+(you should!!!), find it on the Windows Start Menu under the 'W's - Windows Accessories >> Notepad.  Paste the 
+following in Notpad....
+
+// cl Hello.cpp
+#include <stdio.h>
+
+int main()
+{
+ printf("Hello, World!\n");
+ getchar();
+
+ return 0;
+}
+
+...then save that file to some directory/folder on your box where you want to save source files, and save it 
+with an extension of *.cpp.  Might I recommend you create a seperate folder for the file and name the file
+Hello.cpp?  As an example of what I've done on my system as I write this, I've a directory off my root
+C Drive named Code, i.e., C:\Code.  Under that I have a directory for my Microsoft Visual Studio code named
+C:\Code\VStudio.  It is under that directory I made another subdirectory named Hello which is where I saved
+the above code as Hello.cpp, i.e.,...
+
+C:\Code\VStudio\Hello\Hello.cpp
+
+Now open a Visual Studio Command Prompt Window (or, maybe you have it open already if you followed my steps 1 
+and 2 above) and use the CD (Change Directory) command to change the current or active directory to where 
+you've just saved your Hello.cpp file.  For example, when I opened a command prompt window this is what I got...
+
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.2
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community>
+
+So you can see I'm in one of the Visual Studio installation directories.  We've got to move out of there to
+where our Hello.cpp file is located.  The CD command will do that.  So to get us back to the root or C 
+directory type CD\ at the command prompt and hit [ENTER], i.e.,...
+
+CD\ [ENTER]
+
+Then you should see this....
+
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.2
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community>CD\
+
+C:\>
+
+Next, we'll 'move out' to where our Hello.cpp file is located.  So do another CD command to get to the directory
+where you put your Hello.cpp file.  For me it's like so....
+
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.2
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community>CD\
+
+C:\>CD C:\Code\VStudio\Hello
+
+C:\Code\VStudio\Hello>
+
+So as you can see, I'm now in the \Hello subdirectory.  If I do a Dir command I'll see my Hello.cpp file as the 
+only file there....
+
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.2
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community>CD\
+
+C:\>CD C:\Code\VStudio\Hello
+
+C:\Code\VStudio\Hello>Dir
+ Volume in drive C has no label.
+ Volume Serial Number is 92DC-1CD1
+
+ Directory of C:\Code\VStudio\Hello
+
+09/26/2021  11:34 AM    <DIR>          .
+09/26/2021  11:34 AM    <DIR>          ..
+09/26/2021  11:33 AM                96 Hello.cpp
+               1 File(s)             96 bytes
+               2 Dir(s)  1,895,221,362,688 bytes free
+
+C:\Code\VStudio\Hello>
+
+Now let's build Hello.cpp into Hello.exe.  At the command prompt simply type...
+
+cl Hello.cpp [ENTER]
+
+You don't type the [ENTER] part.  You just type 'cl Hello.cpp' then press the [ENTER] key.  Here's what I see on my screen....
+
+**********************************************************************
+** Visual Studio 2019 Developer Command Prompt v16.11.2
+** Copyright (c) 2021 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community>CD\
+
+C:\>CD C:\Code\VStudio\Hello
+
+C:\Code\VStudio\Hello>Dir
+ Volume in drive C has no label.
+ Volume Serial Number is 92DC-1CD1
+
+ Directory of C:\Code\VStudio\Hello
+
+09/26/2021  11:34 AM    <DIR>          .
+09/26/2021  11:34 AM    <DIR>          ..
+09/26/2021  11:33 AM                96 Hello.cpp
+               1 File(s)             96 bytes
+               2 Dir(s)  1,895,221,362,688 bytes free
+
+C:\Code\VStudio\Hello>cl Hello.cpp
+Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30133 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Hello.cpp
+Microsoft (R) Incremental Linker Version 14.29.30133.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:Hello.exe
+Hello.obj
+
+C:\Code\VStudio\Hello>
+
+Above is the full output from when I first opened a command prompt window for Visual Studio and Microsoft's build chain.
+It's starting to add up and get confusing, so we can do a cls (clear screen) to get rid of what we don't want to see anymore.
+But I thought it would be instructive up to this point to keep showing the complete history of what I'm doing so you can
+follow along.  So anyway, you should be able to see above the output from the compiler - which is cl.exe, and from the linker,
+which is link.exe.  The compiler is version 19 and the linker is version 14.  There were no errors reported, and the outputs
+of the compiler and linker are shown above as Hello.exe - which is the output of the linker, and Hello.obj - which is the
+output file from the compiler.  If you clear your console window with the cls command and do another dir command to see the
+new contents of the \Hello subdirectory you should see something like so....
+
+
+C:\Code\VStudio\Hello>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 92DC-1CD1
+
+ Directory of C:\Code\VStudio\Hello
+
+09/26/2021  11:53 AM    <DIR>          .
+09/26/2021  11:53 AM    <DIR>          ..
+09/26/2021  11:33 AM                96 Hello.cpp
+09/26/2021  11:53 AM           127,488 Hello.exe
+09/26/2021  11:53 AM             2,539 Hello.obj
+               3 File(s)        130,123 bytes
+               2 Dir(s)  1,895,219,253,248 bytes free
+
+C:\Code\VStudio\Hello>
+
+As seen above we have a 96 byte Hello.cpp source file, a 127,488 byte executable, and a 2,539 byte Hello.obj file.  We can run
+the Hello.exe file by simply typing it's name - with or without the extension, at the command prompt....
+
+
+C:\Code\VStudio\Hello>Hello
+Hello, World!
+ 
+Note that you need to hit the [ENTER] key to cause the program to end because it will be 'stuck' in the C Runtime function
+getchar() call waiting patiently for a keystroke.  Note that if you are having any troubles at this point, such as failing
+to get my Hello.cpp file to build without errors, then you've done something wrong - perhaps not copying or typing my Hello.cpp
+file correctly, and you need to backup and follow my directions EXACTLY!!!!  I'll assume from here on out that you are with me
+at this point.
+
+So lets's review and get a deeper understanding of what has gone on so far.  When we opened the Visual Studio's Command Prompt
+it was just like any command prompt window except that in the shortcut to it Microsoft caused a batch file to run named 
+vcvars64.bat which configured the environment for command line building using something termed in C or C++ parlance the 'Build 
+Chain'.  On my system it's located here (I think, maybe)....
+
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\bin\Hostx64\x64
+
+It used to be very simple to find it, but the past few years it has gotten rather complicated.  But not to worry!  It doesn't
+really matter where it is.  If you've followed my directions above, Hello.cpp will build correctly as the system will locate
+everything correctly.  But it would be worth the reader's while to examine some of the files in the \bin folder of the build chain to at least locate
+the ones I'm describing here, specifically cl.exe and link.exe.
