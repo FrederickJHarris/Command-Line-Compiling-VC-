@@ -96,8 +96,7 @@
    everything is working for you.
 */
 
-// cl Form1.cpp /FeForm1.exe /O1 /Os /link Kernel32.lib User32.lib 
-// cl Form1.cpp /FeForm1.exe /O1 /Os
+// cl Form1.cpp /O1 /Os /link Kernel32.lib User32.lib 
 #include <windows.h>
 #include <tchar.h>
 
