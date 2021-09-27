@@ -354,6 +354,9 @@ or Dev-C++.  In those environments though one must navigate through a lot of com
 dialogs, so on and so forth, to find the location of where the linker settings are, so as to tell the linker the name of the library
 containing the missing 'unresolved externals' of which it is complaining.
 
+Oh!  One thing I failed to tell you - you can get a listing of linker command line switches, just like we did with cl.exe, e.g., 
+cl /?, by doing this at the command prompt...
+
+link /?
+
 So let's move on to building a Windows program with a graphical user interface, and we'll build it from the command line.
-
-
