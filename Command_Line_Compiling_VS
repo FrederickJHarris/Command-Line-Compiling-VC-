@@ -20,6 +20,7 @@ that it's possible to code without heavyweight IDE's.  If you don't have a short
 (you should!!!), find it on the Windows Start Menu under the 'W's - Windows Accessories >> Notepad.  Paste the 
 following in Notpad....
 
+// Hello.cpp
 // cl Hello.cpp
 #include <stdio.h>
 
