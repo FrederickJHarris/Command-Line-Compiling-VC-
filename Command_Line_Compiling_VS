@@ -201,5 +201,111 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.2
 
 It used to be very simple to find it, but the past few years it has gotten rather complicated.  But not to worry!  It doesn't
 really matter where it is.  If you've followed my directions above, Hello.cpp will build correctly as the system will locate
-everything correctly.  But it would be worth the reader's while to examine some of the files in the \bin folder of the build chain to at least locate
-the ones I'm describing here, specifically cl.exe and link.exe.
+everything correctly.  But it would be worth the reader's while to examine some of the files in the \bin folder of the build chain 
+to at least locate the ones I'm describing here, specifically cl.exe and link.exe.
+
+So let's get into this further.  At the top of Hello.cpp you'll see this line commented out....
+
+// cl Hello.cpp
+
+That line - minus the '//' comment characters, is what we fed into cl.exe - the MS VC++ compilere.  It is about the simplest
+command line string possible that actually builds a binary file, i.e., executable.  In all my programs, at the top of the main
+or startup module, I place these command line strings.  When I wish to build the program I simply copy the command line string
+onto the clipboard, then paste it into the command prompt window, then hit [ENTER].  There are other ways to do it for larger
+and more complex programs, and I'll get to describing that in the fullness of time, but for now as we're just starting out, let's
+stick with this technique.
+
+Obviously, things can become more complicated, so let's look at some of the modifications we can make to the above command line
+string.  First we'll look at things termed compiler and linker 'switches'.  At the command prompt, clear your screen with cls, then
+do this....
+
+C:\Code\VStudio\Hello>cl /?
+
+In other words, just type 'cl /?' [ENTER]
+
+Wow!  That had a big effect, didn't it?  That's how one gets help on all the 'switches' cl.exe recognizes.  Note there is more info
+there than will fit on one console screen so you have to keep hitting [ENTER] to scroll through all the data - maybe 6 or eight 
+screen-fulls.  Let's try some!
+
+If you want, delete Hello.obj and Hello.exe from your \Hello directory, and try this for a new command line string....
+
+cl Hello.cpp /O1 /Os /FeHelloWorld.exe [ENTER]
+
+In the above command line string the /O1, /Os, and /Fe terms tell the compiler to, respectively, optimize maximally for code
+space, optimize for code space (somewhat redundant), and rename the output executable file a different name than the source file.
+In the case above we rename it 'HelloWorld.exe' instead of the source code's Hello.exe.  If you execute the above and check out
+your \Hello folder you'll see we now have a HelloWorld.exe.  On my system the optimizations had no effect.  Not much optimization
+can be done to a simple program like that with only two function calls.
+
+Let's try another instructive example before we move on to building GUI code.  Delete the Hello.obj and HelloWorld.exe files from
+your \Hello directory and try this command line string....
+
+cl Hello.cpp /c [ENTER]
+
+Here is my command window after doing that and following it with a dir command to show the contents of the \Hello folder...
+
+C:\Code\VStudio\Hello>cl Hello.cpp /c
+Microsoft (R) C/C++ Optimizing Compiler Version 19.25.28614 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Hello.cpp
+
+C:\Code\VStudio\Hello>dir
+ Volume in drive C is Windows
+ Volume Serial Number is 3230-2F4C
+
+ Directory of C:\Code\VStudio\Hello
+
+09/26/2021  06:37 PM    <DIR>          .
+09/26/2021  06:37 PM    <DIR>          ..
+09/26/2021  11:33 AM                96 Hello.cpp
+09/26/2021  06:37 PM             2,521 Hello.obj
+               2 File(s)          2,617 bytes
+               2 Dir(s)  848,256,962,560 bytes free
+
+C:\Code\VStudio\Hello>
+
+If you examine the above carefully you might note (if you are really observant) that no executable file was created.  The only
+output file of the compiler was Hello.obj.  The /c switch told the compiler to only compile the Hello.cpp source and output an
+object file only - ignoring the next or linking step.  A compiler only knows about and examines one source code file at a time
+and it more or less converts it into binary or machine code format, then outputs that file as seen above.  I qualified the
+former sentence with the term 'more or less' because an object file can't be run or executed directly, because it isn't quite 
+'done' yet; 'done' in the sense of a cooking metaphor, like a steak that's too raw yet to eat, or a cake not done in the middle
+yet.  For you see, virtually all programs pull in external code not found in any particular source code file.  Indeed, that is
+the case in the above Hello.cpp file.  There are two calls to external routines which are not present in the Hello.cpp source.
+Those two calls are to a C Runtime function named printf() and another named getchar().  The actual binary code for those two
+functions are contained in the C Runtime Library, and what the compiler will do when converting the Hello.cpp code to binary is
+mark those function calls in such a way that the linker in the next link step can pull that binary code out of the necessary 
+library and incorporate it into the final Hello.exe file.  
+
+I failed to take note so far of the one include file in Hello.cpp.  That would be for #include <stdio.h>.  The compiler was able
+to successfully build Hello.cpp into Hello.obj only because of the inclusion of that include.  If that include weren't there, the
+compiler would issue an error and stop compiling.  So another way of looking at the compilation process is to recognize that the
+compiler will compare each line in a program to what it considers as correct C or C++ syntax, as the case may be, and to what it
+recognizes as a valid internal language function call, such as sizeof() for example, or to the prototype of a correct external
+function call as found in an include file.  I leave it as an exercise for the reader to attempt compilation of the above Hello.cpp
+file after commenting out the #include <stdio>.  The compiler will 'error out', which is bad, but the good part of it is that it
+will tell you in the error output exactly what it didn't like, and which line number in the program was the subject of its ire.
+This really is important, so maybe I ought to stop being lazy, do it myself, and show you the output.  So I slash, slashed stdio.h
+and attempted to recompile and here is the output...
+
+C:\Code\VStudio\Hello>cl Hello.cpp
+Microsoft (R) C/C++ Optimizing Compiler Version 19.25.28614 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Hello.cpp
+Hello.cpp(5): error C3861: 'printf': identifier not found
+Hello.cpp(6): error C3861: 'getchar': identifier not found
+
+C:\Code\VStudio\Hello>
+
+So you see, with stdio.h commented out, the compiler can not make any sence out of printf on line 5 and getchar() on line 6.  These
+'identifers' are not symbols the compiler knows anything about.  It simply can't continue and aborts with an error.  On the other
+hand, if printf() and getchar() functions were implemented in Hello.cpp, the compiler would have been able to continue without any
+includes, and output binary opcodes for everything, i.e., everything in main(), printf(), and getchar().  And the linker would have
+an easy job.  Essentially, all it would need to do is output the executable almost exactly 'as is'.  So let's move on to the link 
+step.
+
+
+
+
