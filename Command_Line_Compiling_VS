@@ -359,4 +359,340 @@ cl /?, by doing this at the command prompt...
 
 link /?
 
-So let's move on to building a Windows program with a graphical user interface, and we'll build it from the command line.
+So let's move on to building a Windows program with a graphical user interface, and we'll build it from the command line. To start,
+allow me to describe my file setup, in the same way as I did with our Hello project above.  My reader can do the same, or use his
+or her own file names, locations and directories.  First, I created a directory under my C:\Code\VStudio folder named Forms, i.e.,
+
+C:\Code\VStudio\Forms
+
+...and next in my ...\Forms folder I created another directory named Form1, i.e.,...
+
+C:\Code\VStudio\Forms\Form1
+
+Next I changed my directory using the CD (ChrDir, i.e., Change Directory) command from the C:\Code\VStudio\Hello directory where we
+were working with the Hello project, to the new ...\Form1 directory...
+
+C:\Code\VStudio\Hello>CD\
+
+C:\>CD C:\Code\VStudio\Forms\Form1
+
+C:\Code\VStudio\Forms\Form1> 
+
+Below is my Form1.cpp file, which is about as stripped down and minimalistic of a Windows C++ SDK program as it gets which still
+nonetheless registers a custom Window Class and utilizes a Window Procedure to handle messages from the Windows operating system...
+
+// Form1.cpp
+// cl Form1.cpp user32.lib
+#include <windows.h>
+
+LRESULT CALLBACK fnWndProc(HWND hwnd, unsigned int msg, WPARAM wParam, LPARAM lParam)
+{ 
+ if(msg==WM_DESTROY)
+ {
+    PostQuitMessage(0);
+    return 0;
+ }
+
+ return (DefWindowProc(hwnd, msg, wParam, lParam));
+}
+ 
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevIns, LPSTR lpszArgument, int iShow)
+{
+ MSG messages;
+ WNDCLASS wc;
+  
+ wc.lpszClassName = "Form1",   wc.lpfnWndProc   = fnWndProc;
+ wc.hInstance     = hInstance, wc.style         = 0;
+ wc.cbClsExtra    = 0,         wc.cbWndExtra    = 0;
+ wc.hIcon         = NULL,      wc.hCursor       = NULL;
+ wc.lpszMenuName  = NULL,      wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+ RegisterClass(&wc);
+ CreateWindow("Form1","Form1",WS_OVERLAPPEDWINDOW|WS_VISIBLE,200,100,325,300,HWND_DESKTOP,0,hInstance,0);
+ while(GetMessage(&messages,NULL,0,0))
+ {
+    TranslateMessage(&messages);
+    DispatchMessage(&messages);
+ }
+
+ return messages.wParam;
+}
+
+I will provide a tutorial on all this elsewhere for any of my readers who do not understand what is going on in the above
+code, but for now my primary emphasis is on command line compilation and building, with an eye to showing readers who
+only use an IDE how easy it is to do.  And it is indeed easy.  Just put the above code for Form1.cpp in your directory
+and execute cl.exe as follows....
+
+cl Form1.cpp user32.lib [ENTER]
+
+Here is my console window after that....
+
+
+C:\Code\VStudio\Hello>CD\
+
+C:\>CD C:\Code\VStudio\Forms\Form1
+
+C:\Code\VStudio\Forms\Form1>cl Form1.cpp user32.lib
+Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30133 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Form1.cpp
+Microsoft (R) Incremental Linker Version 14.29.30133.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:Form1.exe
+Form1.obj
+user32.lib
+
+C:\Code\VStudio\Forms\Form1>
+
+And that's it!  Couldn't be simpler.  If you examine the ..\Forms\Form1 directory you'll find Form1.obj produced by the compiler
+cl.exe and Form1.exe produced by the linker Link.exe.  The Form1.exe file is showing up as 92,160 bytes on my system.  You can
+double click on it from Windows Explorer to execute it, or type Form1 at the console window and that will start it too.
+
+Let's compare the command line compilation string for our Form1.cpp project with our earlier Hello project.  For the Hello project
+we simply had....
+
+cl Hello.cpp
+
+...and for Form1.cpp we had....
+
+cl Form1.cpp user32.lib
+
+As you can see, there are two command line arguments to cl.exe there; 1) Form1.cpp for the compiler cl.exe, and 2) user32.lib
+for the linker, link.exe.  That could possibly be made clearer with this command line string, which is a bit more verbose,
+but is entirely equivalent and produces the same result...
+
+cl Form1.cpp /link user32.lib
+
+The difference between our Hello.cpp file and project and our present GUI Form1 project is that the linker needed to look
+elsewhere other than in the C or C++ Standard Libraries for 'external' function call resolution in order to create the
+executable binary file - Form1.exe.  Specifically, the binary code for the external function calls printf() and getchar() in 
+Hello.cpp were located in the Default Library used by the build system, and for that reason we did not have to list them
+in our Hello project command line compilation string.  In Form1.cpp there are no C or C++ Standard Library function calls
+whatsoever.  However there ARE, if my counting is correct, seven function calls to functions which are implemented in 
+Microsoft's proprietary User32.lib, i.e., a function library specific to Microsoft systems.  They are, starting from the top...
+
+PostQuitMessage
+DefWindowProc
+RegisterClass
+CreateWindow
+GetMessage
+TranslateMessage
+DispatchMessage
+
+That is why the user32.lib entry had to be added to our compilation string to create the Form1.exe file.  This is important 
+stuff for any C++ coder to understand, so I wish to make something of an interesting and perhaps startling digression here to 
+further cement these issues in the reader's mind.  Since as I stated above there are no calls in Form1.cpp to C or C++
+Standard Library functions, one might ledgitimately ask if the linker can be made to not include those Default Libraries in the 
+building of the executable binary?  The answer is 'Yes', and if the reader were to do a 'Link /?' as I described somewhere
+above to dump all the linker switches, one might notice this....
+
+/NODEFAULTLIB[:library]
+
+What that does is knock the C/C++ Standard Library as implemented by Microsoft out of the linker's search path as it attempts
+to resolve 'external' function references.  Recall I stated that main() and WinMain() weren't really the start up or entry
+point functions for a C or C++ program?  Well, what I want the reader to do now is build this file into an object file, i.e.,
+obj file using the command line string as seen in the file below....
+
+//========================================================================================
+//                 Developed As An Addition To Matt Pietrek's LibCTiny.lib
+//                              By Fred Harris, January 2016
+//
+// cl crt_win_a.cpp /D "_CRT_SECURE_NO_WARNINGS" /O1 /Os /GS- /c /W3 /DWIN32_LEAN_AND_MEAN 
+//========================================================================================
+#include <windows.h>
+#pragma comment(linker, "/defaultlib:kernel32.lib")
+#pragma comment(linker, "/nodefaultlib:libc.lib")
+#pragma comment(linker, "/nodefaultlib:libcmt.lib")
+
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
+
+extern "C" void __cdecl WinMainCRTStartup(void)
+{
+ int iReturn = WinMain(GetModuleHandle(NULL),NULL,NULL,SW_SHOWDEFAULT);
+ ExitProcess(iReturn);
+} 
+
+Copy the above to a crt_win_a.cpp file and save it as text in the same directory with your Form1.cpp file, and execute the 
+command line string as seen above in the file at your command prompt, i.e.,...
+
+cl crt_win_a.cpp /D "_CRT_SECURE_NO_WARNINGS" /O1 /Os /GS- /c /W3 /DWIN32_LEAN_AND_MEAN 
+
+...and you should obtain a crt_win_a.obj as a result, because, if you examine the command line string cartefully you'll find
+the '/c' argument we used above in our Hello project, which causes the compiler to only produce the *.obj file without calling
+the linker.  It would be worthwhile for my reader to examine all those arguments in cl's command line string to understand
+what they are doing.  Here's what I get when I compile that file...
+
+C:\Code\VStudio\Forms\Form1>cl crt_win_a.cpp /D "_CRT_SECURE_NO_WARNINGS" /O1 /Os /GS- /c /W3 /DWIN32_LEAN_AND_MEAN
+Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30133 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+crt_win_a.cpp
+
+C:\Code\VStudio\Forms\Form1>
+
+Nothing too interesting there, is there?  But the important thing is it worked, for if you examine your directory where you
+have Form1.cpp and crt_win_a.cpp you'll find your newly minted crt_win_a.obj file.
+
+Next, rebuild Form1.cpp with this command line string....
+
+cl Form1.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib
+
+Here is the output in my console window from that operation....
+
+C:\Code\VStudio\Forms\Form1>cl Form1.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib
+Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30133 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Form1.cpp
+Microsoft (R) Incremental Linker Version 14.29.30133.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:Form1.exe
+crt_win_a.obj
+user32.lib
+Form1.obj
+
+C:\Code\VStudio\Forms\Form1>
+
+No errors, so it built with success.  Now for the shock!  Go to Windows Explorer and examine the Form1.exe file just created.
+Look at the size of the executable.  I'm seeing 3k instead of the 90k of the executable created against a link with the C/C++
+Standard Library.  Execute this file and you'll see it works exactly the same as the Form1.exe file created first above using
+'static' linkage to the LIBC.LIB or LIBCMT.LIB of the C/C++ Standard Library.  And this is a statically linked executable
+requiring no run time dependencies to work on any system to which it might be copied.  No necessity for distributing 
+redistributable packages with the executable or anything like that.
+
+That crt_win_a.cpp file is part of my C Runtime Replacement for Microsoft's libraries, which I consider are too bloated
+for me to work with.  It's my guess that if the reader followed my example above, that would have been by far the smallest 
+executable he or she ever produced.  But I thought this exercise might give the interested reader some insight into the power 
+available when creating C or C++ programs and doing command line compilation.
+
+Let's now turn to enhancing Form1.cpp by outputting to the window a 'Hello, World!' message.  This will definitely enhance
+the reader's knowledge of the compilation/linkage process.  Let's keep the same directory, but save this code as Form1a.cpp.
+Note I added an 'a' character at the end of the 'Form1' string.....
+
+// Form1a.cpp
+// cl Form1a.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib
+#include <windows.h>
+
+LRESULT CALLBACK fnWndProc(HWND hwnd, unsigned int msg, WPARAM wParam, LPARAM lParam)
+{
+ switch(msg)
+ {
+   case WM_PAINT:
+     {
+        PAINTSTRUCT ps;
+        HDC hDC=BeginPaint(hwnd,&ps);
+        TextOut(hDC,0,0,"Hello, World!",13);
+        EndPaint(hwnd,&ps);
+        return 0;
+     }
+   case WM_DESTROY:
+     {
+        PostQuitMessage(0);
+        return 0;
+     }
+ } 
+
+ return (DefWindowProc(hwnd, msg, wParam, lParam));
+}
+ 
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevIns, LPSTR lpszArgument, int iShow)
+{
+ MSG messages;
+ WNDCLASS wc;
+  
+ wc.lpszClassName = "Form1",   wc.lpfnWndProc   = fnWndProc;
+ wc.hInstance     = hInstance, wc.style         = 0;
+ wc.cbClsExtra    = 0,         wc.cbWndExtra    = 0;
+ wc.hIcon         = NULL,      wc.hCursor       = NULL;
+ wc.lpszMenuName  = NULL,      wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+ RegisterClass(&wc);
+ CreateWindow("Form1","Form1",WS_OVERLAPPEDWINDOW|WS_VISIBLE,200,100,325,300,HWND_DESKTOP,0,hInstance,0);
+ while(GetMessage(&messages,NULL,0,0))
+ {
+    TranslateMessage(&messages);
+    DispatchMessage(&messages);
+ }
+
+ return messages.wParam;
+}  
+
+So you can see my compilation string above (I always put it there) which is....
+
+cl Form1a.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib
+
+So paste that into your console window to build the program.  Here is what I get....
+
+C:\Code\VStudio\Forms\Form1>cl Form1a.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib
+Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30133 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Form1a.cpp
+Microsoft (R) Incremental Linker Version 14.29.30133.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:Form1a.exe
+crt_win_a.obj
+user32.lib
+Form1a.obj
+Form1a.obj : error LNK2019: unresolved external symbol __imp_TextOutA referenced in function "__int64 __cdecl 
+fnWndProc(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?fnWndProc@@YA_JPEAUHWND__@@I_K_J@Z)
+Form1a.exe : fatal error LNK1120: 1 unresolved externals
+
+C:\Code\VStudio\Forms\Form1>
+
+Uh Oh!  We've got a problem!  Didn't I tell you that you WOULD encounter this?  And that it wouldn't make you happy?  That is one 
+ugly error message and output screen, isn't it?  And like I said, there is no line number in the error message telling you
+where in your source the error is located.  But if you understand the compilation/linkage process, you understand that the linker
+can't tell you where in the source code the error lies, because it isn't working with textural source but rather with binary
+object and library code.  What happened above is the compiler 'read in' the contents of Windows.h header and found prototypes, 
+i.e., function definitions, for all of the Windows Api functions which it found in the Form1a source above.  When it generated
+object code in Form1a.obj it left 'markers', technically termed in compiler writer's parlance 'fixups', which it delegated
+to the linker to resolve.  Meaning, it was left up to the linker to find the binary object or library code to pull into the
+executable it was tasked to create.  The compiler had done all it could.  It found that the code in Form1a.cpp was syntactilly 
+correct in terms of C++ usage, and it found syntactilly correct function prototypes for all the external functions referenced
+in Form1a.cpp.  It created all the object code it could, then passed on execution to the linker to find the missing object
+code for the external functions.
+
+So the linker is aware that in the CRT Start Up routine the Default Library was set to Kernel32.lib and LIBC and LIBCMT were
+disallowed.  So the linker would have looked in kernel32.lib for binary code for BeginPaint(), TextOut(), and EndPaint().  But
+it would not have found those functions there, as that essential Windows library contains entirely non-GUI related functions,
+such as tasking, memory management, threading, etc.  So the linker's other option would have been to look in the user32.lib
+provided in the command line string for the above three functions.  It would have found BeginPaint() and EndPaint() there,
+but not TextOut(). The reason it didn't find TextOut() there is because that functions IS NOT THERE!  It is in another essential 
+Windows Library named gdi32.lib!  You can easily prove that to yourself.  Simply bring up TextOut in MSDN documentation....
+
+https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-textouta
+
+...and near the bottom of the page you'll see this....
+
+Requirements
+....
+Library 	Gdi32.lib
+....
+
+This pretty much suggests an easy fix to our problem, doesn't it?  Just add gdi32.lib at the end of our compilation string, not?
+So let's try again with this string....
+
+cl Form1a.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib gdi32.lib
+
+Here's my output again with this updated command line compilation string...
+ 
+C:\Code\VStudio\Forms\Form1>cl Form1a.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib gdi32.lib
+Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30133 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Form1a.cpp
+Microsoft (R) Incremental Linker Version 14.29.30133.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:Form1a.exe
+crt_win_a.obj
+user32.lib
+gdi32.lib
+Form1a.obj
+
+C:\Code\VStudio\Forms\Form1>
+
+So we have success!
