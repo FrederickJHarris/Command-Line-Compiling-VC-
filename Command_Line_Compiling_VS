@@ -9,16 +9,16 @@ Command Line Compiling With Visual Studio 2019 (also works with several versions
    Locate the one that says 'x64 Native Tools Command Prompt for VS 2019'.  Click that one to open a
    command prompt console window which also configures that environment for x64 builds by the x64 build
    chain, which involves cl.exe for compiling source files, i.e., *.cpp, *.h, and *.rc files, and link.exe
-   for linking *.obj files created by the compiler;
+   for linking *.obj files created by the compiler.
 
-Let's build Dennis Ritchie's (the creator of C and the Unix operating system) famous Hello, World! program
-from the command line so as to show how straightforward and ridiculously easy it is to build programs from 
-the command line.
+Let's build Dennis Ritchie's (the creator of C and the Unix operating system) famous 'Hello, World!' 
+program from the command line so as to show how straightforward and ridiculously easy it is to build 
+programs from the command line.
 
 First, open Microsoft's Notepad.exe.  We'll use the simplest text editor possible for this, and prove to you
 that it's possible to code without heavyweight IDE's.  If you don't have a shortcut to Notepad on your desktop
-(you should!!!), find it on the Windows Start Menu under the 'W's - Windows Accessories >> Notepad.  Paste the 
-following in Notpad....
+(you should!!!), find it on the Windows Start Menu under the 'W's - Windows Accessories >> Notepad.  
+Paste the following in Notepad....
 
 // Hello.cpp
 // cl Hello.cpp
@@ -33,17 +33,18 @@ int main()
 }
 
 ...then save that file as text to some directory/folder on your box where you want to save source files, and 
-save it with an extension of *.cpp.  Might I recommend you create a seperate folder for the file and name the 
+save it with an extension of *.cpp.  Might I recommend you create a separate folder for the file and name the 
 file Hello.cpp?  As an example of what I've done on my system as I write this, I've a directory off my root
-C Drive named Code, i.e., C:\Code.  Under that I have a directory for my Microsoft Visual Studio code named
-C:\Code\VStudio.  It is under that directory I made another subdirectory named Hello which is where I saved
-the above code as Hello.cpp, i.e.,...
+C Drive named Code, i.e., C:\Code.  Under that I have a directory for my Microsoft Visual Studio code 
+named C:\Code\VStudio.  It is under that directory I made another project subdirectory named Hello which is 
+where I saved the above code as Hello.cpp, i.e.,...
 
 C:\Code\VStudio\Hello\Hello.cpp
 
-Now open a Visual Studio Command Prompt Window (or, maybe you have it open already if you followed my steps 1 
-and 2 above) and use the CD (Change Directory) command to change the current or active directory to where 
-you've just saved your Hello.cpp file.  For example, when I opened a command prompt window this is what I got...
+Now open a Visual Studio Command Prompt Window (or, maybe you have it open already if you followed 
+my steps 1 and 2 above) and use the CD (Change Directory) command to change the current or active 
+directory to where you've just saved your Hello.cpp file.  For example, when I opened a command prompt 
+window this is what I got...
 
 **********************************************************************
 ** Visual Studio 2019 Developer Command Prompt v16.11.2
@@ -71,8 +72,8 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community>CD\
 
 C:\>
 
-Next, we'll 'move out' to where our Hello.cpp file is located.  So do another CD command to get to the directory
-where you put your Hello.cpp file.  For me it's like so....
+Next, we'll 'move out' to where our Hello.cpp file is located.  So do another CD command to get to the 
+directory where you put your Hello.cpp file.  For me it's like so....
 
 **********************************************************************
 ** Visual Studio 2019 Developer Command Prompt v16.11.2
@@ -127,10 +128,11 @@ Hello.obj
 C:\Code\VStudio\Hello>
 
 You should be able to see above the output from the compiler - which is cl.exe, and from the linker, which is 
-link.exe.  The compiler is version 19 and the linker is version 14.  There were no errors reported, and the outputs of 
-the compiler and linker are shown above as Hello.exe - which is the output of the linker, and Hello.obj - which is the
-output file from the compiler.  If you clear your console window with the cls command and do another dir command to 
-see the new contents of the \Hello subdirectory you should see something like so....
+link.exe.  The compiler is version 19 and the linker is version 14.  There were no errors reported, and the 
+outputs of the compiler and linker are shown above as Hello.exe - which is the output of the linker, and 
+Hello.obj - which is the output file from the compiler.  If you clear your console window with the cls 
+command and do another dir command to see the new contents of the \Hello subdirectory you should see 
+something like so....
 
 C:\Code\VStudio\Hello>dir
  Volume in drive C has no label.
@@ -148,72 +150,78 @@ C:\Code\VStudio\Hello>dir
 
 C:\Code\VStudio\Hello>
 
-As seen above we have a 96 byte Hello.cpp source file, a 127,488 byte executable, and a 2,539 byte Hello.obj file.  We can run
-the Hello.exe file by simply typing it's name - with or without the extension, at the command prompt....
+As seen above we have a 96 byte Hello.cpp source file, a 127,488 byte executable, and a 2,539 byte 
+Hello.obj file.  We can run the Hello.exe file by simply typing it's name - with or without the extension, at 
+the command prompt....
 
 C:\Code\VStudio\Hello>Hello
 Hello, World!
  
-Note that you need to hit the [ENTER] key to cause the program to end because it will be 'stuck' in the C Runtime function
-call getchar() waiting patiently for a keystroke.  Note that if you are having any troubles at this point, such as failing
-to get my Hello.cpp file to build without errors, then you've done something wrong - perhaps not copying or typing my Hello.cpp
-file correctly, and you need to backup and follow my directions EXACTLY!!!!  I'll assume from here on out that you are with me
-at this point.
+Note that you need to hit the [ENTER] key to cause the program to end because it will be 'stuck' in the C 
+Runtime function call getchar() waiting patiently for a keystroke.  Note that if you are having any troubles at 
+this point, such as failing to get my Hello.cpp file to build without errors, then you've done something wrong 
+- perhaps not copying or typing my Hello.cpp file correctly, and you need to backup and follow my directions 
+EXACTLY!!!!  I'll assume from here on out that you are with me at this point.
 
-Note that the size of the Hello.exe file of 127,488 bytes is atrocious.  In other code submissions and tutorials I'll
-provide I'll show how we can cut that down to something more reasonable like 3 or 4 k.  
+Note that the size of the Hello.exe file of 127,488 bytes is atrocious.  In other code submissions and tutorials 
+I'll provide I'll show how we can cut that down to something more reasonable like 3 or 4 k.  
 
-So lets's review and get a deeper understanding of what has gone on so far.  When we opened the Visual Studio's Command Prompt
-it was just like any command prompt window except that in the shortcut to it Microsoft caused a batch file to run named 
-vcvars64.bat which configured the environment for command line building using something termed in C or C++ parlance the 'Build 
-Chain'.  On my system it's located here (I think, maybe)....
+So let's review and get a deeper understanding of what has gone on so far.  When we opened the Visual Studio's 
+Command Prompt it was just like any command prompt window except that in the shortcut to it Microsoft caused a 
+batch file to run named vcvars64.bat which configured the environment for command line building using something 
+termed in C or C++ parlance the 'Build Chain'.  On my system it's located here (I think, maybe)....
 
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\bin\Hostx64\x64
 
-It used to be very simple to find it, but the past few years it has gotten rather complicated.  But not to worry!  It doesn't
-really matter where it is.  If you've followed my directions above, Hello.cpp will build correctly as the system will locate
-everything correctly.  But it would be worth the reader's while to examine some of the files in the \bin folder of the build chain 
-to at least locate the ones I'm describing here, specifically cl.exe and link.exe.
+It used to be very simple to find it, but the past few years it has gotten rather complicated.  But not to 
+worry!  It doesn't really matter where it is.  If you've followed my directions above, Hello.cpp will build 
+correctly as the system will locate everything correctly.  But it would be worth the reader's while to examine 
+some of the files in the \bin folder of the build chain to at least locate the ones I'm describing here, 
+specifically cl.exe and link.exe.
 
 So let's get into this further.  At the top of Hello.cpp you'll see this line commented out....
 
 // cl Hello.cpp
 
-That line - minus the '//' comment characters, is what we fed into cl.exe - the MS VC++ compilere.  It is about the simplest
-command line string possible that actually builds a binary file, i.e., executable.  In all my programs, at the top of the main
-or startup module, I place these command line strings.  When I wish to build the program I simply copy the command line string
-onto the clipboard, then paste it into the command prompt window, then hit [ENTER].  There are other ways to do it for larger
-and more complex programs, and I'll get to describing that in the fullness of time, but for now as we're just starting out, let's
-stick with this technique.
+That line - minus the '//' comment characters, is what we fed into cl.exe - the MS VC++ compiler.  It is about 
+the simplest command line string possible that actually builds a binary file, i.e., executable.  In all my 
+programs, at the top of the main or startup module, I place these command line strings.  When I wish to build 
+the program I simply copy the command line string onto the clipboard, then paste it into the command 
+prompt window, then hit [ENTER].  There are other ways to do it for larger and more complex programs, and I'll 
+get to describing that in the fullness of time, but for now as we're just starting out, let's stick with this 
+technique.
 
-Obviously, things can become more complicated, so let's look at some of the modifications we can make to the above command line
-string.  First we'll look at things termed compiler and linker 'switches'.  At the command prompt, clear your screen with cls, then
-do this....
+Obviously, things can become more complicated, so let's look at some of the modifications we can make to the 
+above command line string.  First we'll look at things termed compiler and linker 'switches'.  At the command 
+prompt, clear your screen with cls, then do this....
 
 C:\Code\VStudio\Hello>cl /?
 
 In other words, just type 'cl /?' [ENTER]
 
-Wow!  That had a big effect, didn't it?  That's how one gets help on all the 'switches' cl.exe recognizes.  Note there is more info
-there than will fit on one console screen so you have to keep hitting [ENTER] to scroll through all the data - maybe 6 or eight 
-screen-fulls.  Let's try some!
+Wow!  That had a big effect, didn't it?  That's how one gets help on all the 'switches' cl.exe recognizes.  Note 
+there is more info there than will fit on one console screen so you have to keep hitting [ENTER] to scroll 
+through all the data - maybe 6 or eight screen-fulls.  Let's try some!
 
-If you want, delete Hello.obj and Hello.exe from your \Hello directory, and try this for a new command line string....
+If you want, delete Hello.obj and Hello.exe from your \Hello directory, and try this for a new command line 
+string....
 
 cl Hello.cpp /O1 /Os /FeHelloWorld.exe [ENTER]
 
-In the above command line string the /O1, /Os, and /Fe terms tell the compiler to, respectively, optimize maximally for code
-space, optimize for code space (somewhat redundant), and rename the output executable file a different name than the source file.
-In the case above we rename it 'HelloWorld.exe' instead of the source code's Hello.exe.  If you execute the above and check out
-your \Hello folder you'll see we now have a HelloWorld.exe.  On my system the optimizations had no effect.  Not much optimization
+In the above command line string the /O1, /Os, and /Fe terms tell the compiler to, respectively, optimize 
+maximally for code space, optimize for code space (somewhat redundant), and rename the output executable 
+file a different name than the source file.  In the case above we rename it 'HelloWorld.exe' instead of the 
+source code's Hello.exe.  If you execute the above and check out your \Hello folder you'll see we now have a 
+HelloWorld.exe.  On my system the optimizations had no effect.  Not much optimization
 can be done to a simple program like that with only two function calls.
 
-Let's try another instructive example before we move on to building GUI code.  Delete the Hello.obj and HelloWorld.exe files from
-your \Hello directory and try this command line string....
+Let's try another instructive example before we move on to building GUI code.  Delete the Hello.obj and 
+HelloWorld.exe files from your \Hello directory and try this command line string....
 
 cl Hello.cpp /c [ENTER]
 
-Here is my command window after doing that and following it with a dir command to show the contents of the \Hello folder...
+Here is my command window after doing that and following it with a dir command to show the contents of 
+the \Hello folder...
 
 C:\Code\VStudio\Hello>cl Hello.cpp /c
 Microsoft (R) C/C++ Optimizing Compiler Version 19.25.28614 for x64
@@ -236,29 +244,32 @@ C:\Code\VStudio\Hello>dir
 
 C:\Code\VStudio\Hello>
 
-If you examine the above carefully you might note (if you are really observant) that no executable file was created.  The only
-output file of the compiler was Hello.obj.  The /c switch told the compiler to only compile the Hello.cpp source and output an
-object file only - ignoring the next or linking step.  A compiler only knows about and examines one source code file at a time
-and it more or less converts it into binary or machine code format, then outputs that file as seen above.  I qualified the
-former sentence with the term 'more or less' because an object file can't be run or executed directly, because it isn't quite 
-'done' yet; 'done' in the sense of a cooking metaphor, like a steak that's too raw yet to eat, or a cake not done in the middle
-yet.  For you see, virtually all programs pull in external code not found in any particular source code file.  Indeed, that is
-the case in the above Hello.cpp file.  There are two calls to external routines which are not present in the Hello.cpp source.
-Those two calls are to a C Runtime function named printf() and another named getchar().  The actual binary code for those two
-functions are contained in the C Runtime Library, and what the compiler will do when converting the Hello.cpp code to binary is
-mark those function calls in such a way that the linker in the next link step can pull that binary code out of the necessary 
-library and incorporate it into the final Hello.exe file.  
+If you examine the above carefully you might note (if you are really observant) that no executable file was 
+created.  The only output file of the compiler was Hello.obj.  The /c switch told the compiler to only compile 
+the Hello.cpp source and output an object file only - ignoring the next or linking step.  A compiler only 
+knows about and examines one source code file at a time and it more or less converts it into binary or 
+machine code format, then outputs that file as seen above.  I qualified the former sentence with the term 
+'more or less' because an object file can't be run or executed directly, because it isn't quite 'done' yet; 'done' 
+in the sense of a cooking metaphor, like a steak that's too raw yet to eat, or a cake not done in the middle yet.  
+For you see, virtually all programs pull in external code not found in any particular source code file.  Indeed, 
+that is the case in the above Hello.cpp file.  There are two calls to external routines which are not present in 
+the Hello.cpp source.  Those two calls are to a C Runtime function named printf() and another named 
+getchar().  The actual binary code for those two functions are contained in the C Runtime Library, and what 
+the compiler will do when converting the Hello.cpp code to binary is mark those function calls in such a way 
+that the linker in the next link step can pull that binary code out of the necessary library and incorporate it 
+into the final Hello.exe file.  
 
-I failed to take note so far of the one include file in Hello.cpp.  That would be for #include <stdio.h>.  The compiler was able
-to successfully build Hello.cpp into Hello.obj only because of the inclusion of that include.  If that include weren't there, the
-compiler would issue an error and stop compiling.  So another way of looking at the compilation process is to recognize that the
-compiler will compare each line in a program to what it considers as correct C or C++ syntax, as the case may be, and to what it
-recognizes as a valid internal language function call, such as sizeof() for example, or to the prototype of a correct external
-function call as found in an include file.  I leave it as an exercise for the reader to attempt compilation of the above Hello.cpp
-file after commenting out the #include <stdio>.  The compiler will 'error out', which is bad, but the good part of it is that it
-will tell you in the error output exactly what it didn't like, and which line number in the program was the subject of its ire.
-This really is important, so maybe I ought to stop being lazy, do it myself, and show you the output.  So I slash, slashed stdio.h
-and attempted to recompile and here is the output...
+I failed to take note so far of the one include file in Hello.cpp.  That would be for #include <stdio.h>.  The 
+compiler was able to successfully build Hello.cpp into Hello.obj only because of the inclusion of that 
+include.  If that include weren't there, the compiler would issue an error and stop compiling.  So another way 
+of looking at the compilation process is to recognize that the compiler will compare each line in a program to 
+what it considers as correct C or C++ syntax, as the case may be, and to what it recognizes as a valid internal 
+language function call, such as sizeof() for example, or to the prototype of a correct external function call as 
+found in an include file.  I leave it as an exercise for the reader to attempt compilation of the above Hello.cpp
+file after commenting out the #include <stdio>.  The compiler will 'error out', which is bad, but the good part 
+of it is that it will tell you in the error output exactly what it didn't like, and which line number in the 
+program was the subject of its ire.  This really is important, so maybe I ought to stop being lazy, do it myself, 
+and show you the output.  So I slash, slashed stdio.h and attempted to recompile and here is the output...
 
 C:\Code\VStudio\Hello>cl Hello.cpp
 Microsoft (R) C/C++ Optimizing Compiler Version 19.25.28614 for x64
@@ -270,20 +281,22 @@ Hello.cpp(6): error C3861: 'getchar': identifier not found
 
 C:\Code\VStudio\Hello>
 
-So you see, with stdio.h commented out, the compiler can not make any sence out of printf on line 5 and getchar() on line 6.  These
-'identifers' are not symbols the compiler knows anything about.  It simply can't continue and aborts with an error.  On the other
-hand, if printf() and getchar() functions were implemented in Hello.cpp, the compiler would have been able to continue without any
-includes, and output binary opcodes for everything, i.e., everything in main(), printf(), and getchar().  And the linker would have
-an easy job.  Essentially, all it would need to do is output the executable almost exactly 'as is'.  So let's move on to the link 
+So you see, with stdio.h commented out, the compiler can not make any sense out of printf on line 5 and 
+getchar() on line 6.  These 'identifiers' are not symbols the compiler knows anything about.  It simply can't 
+continue and aborts with an error.  On the other hand, if printf() and getchar() functions were implemented in 
+Hello.cpp, the compiler would have been able to continue without any includes, and output binary opcodes 
+for everything, i.e., everything in main(), printf(), and getchar().  And the linker would have an easy job.  
+Essentially, all it would need to do is output the executable almost exactly 'as is'.  So let's move on to the link 
 step.
 
-If you have Hello.obj in your \Hello subfolder from our last invocation of cl.exe where we simply told it to compile but not link
-Hello.cpp, then all you need to do to invoke the linker - Link.exe, is type....
+If you have Hello.obj in your \Hello subfolder from our last invocation of cl.exe where we simply told it to 
+compile but not link Hello.cpp, then all you need to do to invoke the linker - Link.exe, is type....
 
 ...\Hello>Link Hello.obj
 
-...at the command prompt, i.e., 'Link Hello.obj', and Link will create the executable from Hello.obj.  Here is my console window
-showing that followed by a dir command to list the present contents of my C:\Code\VStudio\Hello subdirectory...
+...at the command prompt, i.e., 'Link Hello.obj', and Link will create the executable from Hello.obj.  Here is 
+my console window showing that followed by a dir command to list the present contents of my 
+C:\Code\VStudio\Hello subdirectory...
 
 C:\Code\VStudio\Hello>Link Hello.obj
 Microsoft (R) Incremental Linker Version 14.25.28614.0
@@ -305,63 +318,71 @@ C:\Code\VStudio\Hello>dir
 
 C:\Code\VStudio\Hello>
 
-So, so far we've outlined and discussed two aspects or steps involved in producing an executable binary using the C/C++ build
-system, which, as an astute reader can now see, is somewhat different from many other programming languages, for example, the 
-Basic family of languages.  I've broken it down into two steps, but it could actually be conceptualized just as well into
-three steps, the first of which would then be the preprocessor stage.  Or the preprocessor stage could be conceptualized as a
-substage of my Step 1 above - the compilation stage.  What the preprocessor does is actually read the includes into the main
-source file at the point of inclusion, and it expands macros.
+So, so far we've outlined and discussed two aspects or steps involved in producing an executable binary using 
+the C/C++ build system, which, as an astute reader can now see, is somewhat different from many other programming 
+languages, for example, the Basic family of languages.  I've broken it down into two steps, but it could actually 
+be conceptualized just as well into three steps, the first of which would then be the preprocessor stage.  Or the 
+preprocessor stage could be conceptualized as a sub-stage of my Step 1 above - the compilation stage.  What the 
+preprocessor does is actually read the includes into the main source file at the point of inclusion, and it 
+expands macros.
 
-But let's move back to further elaboration on the link stage we've just observed.  I'm guessing it hasn't occurred to my reader
-the question of how the linker knew where to find the code for the printf() and getchar() functions?  These are library functions
-- the code for them is not contained in our Hello.cpp file, and there were no command line switches after invoking Link.exe 
-to tell the linker where to find that library code.  The answer is that every vendor of a C or C++ compiler provides there own 
-implementation of the C or C++ Standard Library, and when they set up their build system or build chain the linker has a property
-known as the 'Default Library' which is basically the default place it looks to bring in binary code when it encounters a function
-call not found in the *.obj files with which it is working.  I don't want to fall off the complexity cliff here and overwhelm my
-reader, but if in your studies of C and C++ so far you've been told that main() and WinMain() are the 'entry point' functions
-for console and GUI (Graphical User Interface) programs respectively, that isn't exactly the case.  The actual entry point functions
-are these....
+But let's move back to further elaboration on the link stage we've just observed.  I'm guessing it hasn't 
+occurred to my reader the question of how the linker knew where to find the code for the printf() and 
+getchar() functions?  These are library functions - the code for them is not contained in our Hello.cpp file, 
+and there were no command line switches after invoking Link.exe to tell the linker where to find that library 
+code.  The answer is that every vendor of a C or C++ compiler provides their own implementation of the C 
+or C++ Standard Library, and when they set up their build system or build chain the linker has a property
+known as the 'Default Library' which is basically the default place it looks to bring in binary code when it 
+encounters a function call not found in the *.obj files with which it is working.  I don't want to fall off the 
+complexity cliff here and overwhelm my reader, but if in your studies of C and C++ so far you've been told 
+that main() and WinMain() are the 'entry point' functions for console and GUI (Graphical User Interface) 
+programs respectively, that isn't exactly the case.  The actual entry point functions are these....
 
 wWinMainCRTStartup(void);
 WinMainCRTStartup(void);
 wmainCRTStartup();
 mainCRTStartup();
 
-...depending on whether it's a GUI or console mode program, and whether it's wide or single byte strings.  And from within whichever
-of those functions is contained within the built binary, a call is made to main() or WinMain() in the user's program.  But this
-only happens after the C or C++ Standard Library is loaded.  Note the CRTStartup terms in all four of those functions.  So that's a 
-brief but useful explanation to further cement your understanding of the link stage of the build system.
+...depending on whether it's a GUI or console mode program, and whether it's wide or single byte strings.  
+And from within whichever of those functions is contained within the built binary, a call is made to main() or 
+WinMain() in the user's program.  But this only happens after the C or C++ Standard Library is loaded.  Note 
+the CRTStartup terms in all four of those functions.  So that's a brief but useful explanation to further cement 
+your understanding of the link stage of the build system.
 
-Another important concept to realize, which has very real implications for you - the coder, is that the linker is working only with
-binary *.obj files.  Strangely enough, it isn't reading in source *.cpp files.  Because it doesn't know anything about the textural 
-source files, if it encounters some problem in creating the executable binary, it can't output an error message like the compiler can 
-telling you the line number in the source where it encountered the problem.  The most common example of this you'll encounter is a
-linker error termed 'unresolved external'.  What that means - and using our Hello.cpp as an example, is that in attempting to create
-an executable binary out of the various *.obj files it is looking at, it has encountered a function call which the compiler passed
-on, i.e., it found a function prototype for a function in an include file, e.g., printf() or getchar() in stdio.h, and it left it up
-to the linker to find the binary object code in some library so as to create the executable.  But the linker has searched all the 
-libraries the user provided in the command line string, and it can't find the necessary code in any of them, including it's 'Default
-Library'.  Now, this won't happen in our Hello.cpp example because printf() and getchar() are found in Microsoft's C Library, but 
-I guarantee it will happen to you my reader when you are building your own programs.  And when it happens to you for the first time
-I further guarantee you will not be a happy camper.  Typically you'll have an abort of the linker with an error message something
-to the effect that it encountered an 'unresolved external' and it will provide the name of the function in pretty much mangled form
-for you to ponder over.  The name won't be exact because of C++ name mangling which is necessary to support function overloading,
-but you'll be able to get the picture from the info it provides.  We'll see this and examine it all when we turn to creating GUI
-programs and building them from the command line.  However, this is not an issue specific by any means to command line compilation -
-the exact same issue exists when building code from within an IDE (Integrated Development Environment) like Visual Studio, CodeBlocks,
-or Dev-C++.  In those environments though one must navigate through a lot of complex visual interface elements, i.e., property sheets,
-dialogs, so on and so forth, to find the location of where the linker settings are, so as to tell the linker the name of the library
-containing the missing 'unresolved externals' of which it is complaining.
+Another important concept to realize, which has very real implications for you - the coder, is that the linker is 
+working only with binary *.obj files.  Strangely enough, it isn't reading in source *.cpp files.  Because it 
+doesn't know anything about the textural source files, if it encounters some problem in creating the executable 
+binary, it can't output an error message like the compiler can telling you the line number in the source where it 
+encountered the problem.  The most common example of this you'll encounter is a linker error termed 'unresolved 
+external'.  What that means - and using our Hello.cpp as an example, is that in attempting to create an executable 
+binary out of the various *.obj files it is looking at, it has encountered a function call which the compiler 
+passed on, i.e., it found a function prototype for a function in an include file, e.g., printf() or getchar() in 
+stdio.h, and it left it up to the linker to find the binary object code in some library so as to create the 
+executable.  But the linker has searched all the libraries the user provided in the command line string, and it 
+can't find the necessary code in any of them, including it's 'Default Library'.  Now, this won't happen in our 
+Hello.cpp example because printf() and getchar() are found in Microsoft's C Library, but I guarantee it will happen
+to you my reader when you are building your own programs.  And when it happens to you for the first time I further 
+guarantee you will not be a happy camper.  Typically you'll have an abort of the linker with an error message 
+something to the effect that it encountered an 'unresolved external' and it will provide the name of the function 
+in pretty much mangled and nearly unrecognizable form for you to ponder over.  The name won't be exact because of 
+C++ name mangling which is necessary to support C++ function overloading, but you'll be able to get the picture 
+from the info it provides.  We'll see this and examine it all when we turn to creating GUI programs and building 
+them from the command line.  However, this is not an issue specific by any means to command line compilation - the 
+exact same issue exists when building code from within an IDE (Integrated Development Environment) like Visual 
+Studio, CodeBlocks, or Dev-C++.  In those environments though one must navigate through a lot of complex visual 
+interface elements, i.e., property sheets, dialogs, so on and so forth, to find the location of where the linker 
+settings are, so as to tell the linker the name of the library containing the missing 'unresolved externals' of 
+which it is complaining.
 
-Oh!  One thing I failed to tell you - you can get a listing of linker command line switches, just like we did with cl.exe, e.g., 
-cl /?, by doing this at the command prompt...
+Oh!  One thing I failed to tell you - you can get a listing of linker command line switches, just like we did 
+with cl.exe, e.g., cl /?, by doing this at the command prompt...
 
 link /?
 
-So let's move on to building a Windows program with a graphical user interface, and we'll build it from the command line. To start,
-allow me to describe my file setup, in the same way as I did with our Hello project above.  My reader can do the same, or use his
-or her own file names, locations and directories.  First, I created a directory under my C:\Code\VStudio folder named Forms, i.e.,
+So let's move on to building a Windows program with a graphical user interface, and we'll build it from the 
+command line. To start, allow me to describe my file setup, in the same way as I did with our Hello project 
+above.  My reader can do the same, or use his or her own file names, locations and directories.  First, I 
+created a directory under my C:\Code\VStudio folder named Forms, i.e.,
 
 C:\Code\VStudio\Forms
 
@@ -369,8 +390,9 @@ C:\Code\VStudio\Forms
 
 C:\Code\VStudio\Forms\Form1
 
-Next I changed my directory using the CD (ChrDir, i.e., Change Directory) command from the C:\Code\VStudio\Hello directory where we
-were working with the Hello project, to the new ...\Form1 directory...
+Next I changed my directory using the CD (ChrDir, i.e., Change Directory) command from the 
+C:\Code\VStudio\Hello directory where we were working with the Hello project, to the new ...\Form1 
+directory...
 
 C:\Code\VStudio\Hello>CD\
 
@@ -378,8 +400,9 @@ C:\>CD C:\Code\VStudio\Forms\Form1
 
 C:\Code\VStudio\Forms\Form1> 
 
-Below is my Form1.cpp file, which is about as stripped down and minimalistic of a Windows C++ SDK program as it gets which still
-nonetheless registers a custom Window Class and utilizes a Window Procedure to handle messages from the Windows operating system...
+Below is my Form1.cpp file, which is about as stripped down and minimalistic of a Windows C++ SDK 
+program as it gets which still nonetheless registers a custom Window Class and utilizes a Window Procedure 
+to handle messages from the Windows operating system...
 
 // Form1.cpp
 // cl Form1.cpp user32.lib
@@ -417,10 +440,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevIns, LPSTR lpszArgument, 
  return messages.wParam;
 }
 
-I will provide a tutorial on all this elsewhere for any of my readers who do not understand what is going on in the above
-code, but for now my primary emphasis is on command line compilation and building, with an eye to showing readers who
-only use an IDE how easy it is to do.  And it is indeed easy.  Just put the above code for Form1.cpp in your directory
-and execute cl.exe as follows....
+I will provide a tutorial on all this elsewhere for any of my readers who do not understand what is going on in 
+the above code, but for now my primary emphasis is on command line compilation and building, with an eye to 
+showing readers who only use an IDE how easy it is to do.  And it is indeed easy.  Just put the above code for 
+Form1.cpp in your directory and execute cl.exe as follows....
 
 cl Form1.cpp user32.lib [ENTER]
 
@@ -445,12 +468,13 @@ user32.lib
 
 C:\Code\VStudio\Forms\Form1>
 
-And that's it!  Couldn't be simpler.  If you examine the ..\Forms\Form1 directory you'll find Form1.obj produced by the compiler
-cl.exe and Form1.exe produced by the linker Link.exe.  The Form1.exe file is showing up as 92,160 bytes on my system.  You can
-double click on it from Windows Explorer to execute it, or type Form1 at the console window and that will start it too.
+And that's it!  Couldn't be simpler.  If you examine the ..\Forms\Form1 directory you'll find Form1.obj 
+produced by the compiler cl.exe and Form1.exe produced by the linker Link.exe.  The Form1.exe file is 
+showing up as 92,160 bytes on my system.  You can double click on it from Windows Explorer to execute it, 
+or type Form1 at the console window and that will start it too.
 
-Let's compare the command line compilation string for our Form1.cpp project with our earlier Hello project.  For the Hello project
-we simply had....
+Let's compare the command line compilation string for our Form1.cpp project with our earlier Hello project.  
+For the Hello project we simply had....
 
 cl Hello.cpp
 
@@ -458,19 +482,20 @@ cl Hello.cpp
 
 cl Form1.cpp user32.lib
 
-As you can see, there are two command line arguments to cl.exe there; 1) Form1.cpp for the compiler cl.exe, and 2) user32.lib
-for the linker, link.exe.  That could possibly be made clearer with this command line string, which is a bit more verbose,
-but is entirely equivalent and produces the same result...
+As you can see, there are two command line arguments to cl.exe there; 1) Form1.cpp for the compiler cl.exe, and 
+2) user32.lib for the linker, link.exe.  That could possibly be made clearer with this command line string, 
+which is a bit more verbose, but is entirely equivalent and produces the same result...
 
 cl Form1.cpp /link user32.lib
 
-The difference between our Hello.cpp file and project and our present GUI Form1 project is that the linker needed to look
-elsewhere other than in the C or C++ Standard Libraries for 'external' function call resolution in order to create the
-executable binary file - Form1.exe.  Specifically, the binary code for the external function calls printf() and getchar() in 
-Hello.cpp were located in the Default Library used by the build system, and for that reason we did not have to list them
-in our Hello project command line compilation string.  In Form1.cpp there are no C or C++ Standard Library function calls
-whatsoever.  However there ARE, if my counting is correct, seven function calls to functions which are implemented in 
-Microsoft's proprietary User32.lib, i.e., a function library specific to Microsoft systems.  They are, starting from the top...
+The difference between our Hello.cpp file and project and our present GUI Form1 project is that the linker 
+needed to look elsewhere other than in the C or C++ Standard Libraries for 'external' function call resolution 
+in order to create the executable binary file - Form1.exe.  Specifically, the binary code for the external 
+function calls printf() and getchar() in Hello.cpp were located in the Default Library used by the build system, 
+and for that reason we did not have to list them in our Hello project command line compilation string.  In 
+Form1.cpp there are no C or C++ Standard Library function calls whatsoever.  However there ARE, if my counting is 
+correct, seven function calls to functions which are implemented in Microsoft's proprietary User32.lib, i.e., a 
+function library specific to Microsoft systems.  They are, starting from the top...
 
 PostQuitMessage
 DefWindowProc
@@ -480,19 +505,21 @@ GetMessage
 TranslateMessage
 DispatchMessage
 
-That is why the user32.lib entry had to be added to our compilation string to create the Form1.exe file.  This is important 
-stuff for any C++ coder to understand, so I wish to make something of an interesting and perhaps startling digression here to 
-further cement these issues in the reader's mind.  Since as I stated above there are no calls in Form1.cpp to C or C++
-Standard Library functions, one might ledgitimately ask if the linker can be made to not include those Default Libraries in the 
-building of the executable binary?  The answer is 'Yes', and if the reader were to do a 'Link /?' as I described somewhere
-above to dump all the linker switches, one might notice this....
+That is why the user32.lib entry had to be added to our compilation string to create the Form1.exe file.  This 
+is important stuff for any C++ coder to understand, so I wish to make something of an interesting and perhaps 
+startling digression here to further cement these issues in the reader's mind.  Since as I stated above there are 
+no calls in Form1.cpp to C or C++ Standard Library functions, one might legitimately ask if the linker can be made 
+to not include those Default Libraries in the building of the executable binary?  The answer is 'Yes', and if the 
+reader were to do a 'Link /?' as I described somewhere above to dump all the linker switches, one might notice 
+this....
 
 /NODEFAULTLIB[:library]
 
-What that does is knock the C/C++ Standard Library as implemented by Microsoft out of the linker's search path as it attempts
-to resolve 'external' function references.  Recall I stated that main() and WinMain() weren't really the start up or entry
-point functions for a C or C++ program?  Well, what I want the reader to do now is build this file into an object file, i.e.,
-obj file using the command line string as seen in the file below....
+What that does is knock the C/C++ Standard Library as implemented by Microsoft out of the linker's search 
+path as it attempts to resolve 'external' function references.  Recall I stated that main() and WinMain() 
+weren't really the start up or entry point functions for a C or C++ program?  Well, what I want the reader to 
+do now is build this file into an object file, i.e., obj file using the command line string as seen in the file 
+below....
 
 //========================================================================================
 //                 Developed As An Addition To Matt Pietrek's LibCTiny.lib
@@ -513,15 +540,16 @@ extern "C" void __cdecl WinMainCRTStartup(void)
  ExitProcess(iReturn);
 } 
 
-Copy the above to a crt_win_a.cpp file and save it as text in the same directory with your Form1.cpp file, and execute the 
-command line string as seen above in the file at your command prompt, i.e.,...
+Copy the above to a crt_win_a.cpp file and save it as text in the same directory with your Form1.cpp file, and 
+execute the command line string as seen above in the file at your command prompt, i.e.,...
 
 cl crt_win_a.cpp /D "_CRT_SECURE_NO_WARNINGS" /O1 /Os /GS- /c /W3 /DWIN32_LEAN_AND_MEAN 
 
-...and you should obtain a crt_win_a.obj as a result, because, if you examine the command line string cartefully you'll find
-the '/c' argument we used above in our Hello project, which causes the compiler to only produce the *.obj file without calling
-the linker.  It would be worthwhile for my reader to examine all those arguments in cl's command line string to understand
-what they are doing.  Here's what I get when I compile that file...
+...and you should obtain a crt_win_a.obj as a result, because, if you examine the command line string 
+carefully you'll find the '/c' argument we used above in our Hello project, which causes the compiler to only 
+produce the *.obj file without calling the linker.  It would be worthwhile for my reader to examine all those 
+arguments in cl's command line string to understand what they are doing.  Here's what I get when I compile 
+that file...
 
 C:\Code\VStudio\Forms\Form1>cl crt_win_a.cpp /D "_CRT_SECURE_NO_WARNINGS" /O1 /Os /GS- /c /W3 /DWIN32_LEAN_AND_MEAN
 Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30133 for x64
@@ -531,8 +559,8 @@ crt_win_a.cpp
 
 C:\Code\VStudio\Forms\Form1>
 
-Nothing too interesting there, is there?  But the important thing is it worked, for if you examine your directory where you
-have Form1.cpp and crt_win_a.cpp you'll find your newly minted crt_win_a.obj file.
+Nothing too interesting there, is there?  But the important thing is it worked, for if you examine your 
+directory where you have Form1.cpp and crt_win_a.cpp you'll find your newly minted crt_win_a.obj file.
 
 Next, rebuild Form1.cpp with this command line string....
 
@@ -555,21 +583,23 @@ Form1.obj
 
 C:\Code\VStudio\Forms\Form1>
 
-No errors, so it built with success.  Now for the shock!  Go to Windows Explorer and examine the Form1.exe file just created.
-Look at the size of the executable.  I'm seeing 3k instead of the 90k of the executable created against a link with the C/C++
-Standard Library.  Execute this file and you'll see it works exactly the same as the Form1.exe file created first above using
-'static' linkage to the LIBC.LIB or LIBCMT.LIB of the C/C++ Standard Library.  And this is a statically linked executable
-requiring no run time dependencies to work on any system to which it might be copied.  No necessity for distributing 
-redistributable packages with the executable or anything like that.
+No errors, so it built with success.  Now for the shock!  Go to Windows Explorer and examine the Form1.exe 
+file just created.  Look at the size of the executable.  I'm seeing 3k instead of the 90k of the executable 
+created against a link with the C/C++ Standard Library.  Execute this file and you'll see it works exactly the 
+same as the Form1.exe file created first above using 'static' linkage to the LIBC.LIB or LIBCMT.LIB of the 
+C/C++ Standard Library.  And this is a statically linked executable requiring no run time dependencies to 
+work on any system to which it might be copied.  No necessity for distributing redistributable packages with 
+the executable or anything like that.
 
-That crt_win_a.cpp file is part of my C Runtime Replacement for Microsoft's libraries, which I consider are too bloated
-for me to work with.  It's my guess that if the reader followed my example above, that would have been by far the smallest 
-executable he or she ever produced.  But I thought this exercise might give the interested reader some insight into the power 
-available when creating C or C++ programs and doing command line compilation.
+That crt_win_a.cpp file is part of my C Runtime Replacement for Microsoft's libraries, which I consider are 
+too bloated for me to work with.  It's my guess that if the reader followed my example above, that would 
+have been by far the smallest executable he or she ever produced.  But I thought this exercise might give the 
+interested reader some insight into the power available when creating C or C++ programs and doing 
+command line compilation.
 
-Let's now turn to enhancing Form1.cpp by outputting to the window a 'Hello, World!' message.  This will definitely enhance
-the reader's knowledge of the compilation/linkage process.  Let's keep the same directory, but save this code as Form1a.cpp.
-Note I added an 'a' character at the end of the 'Form1' string.....
+Let's now turn to enhancing Form1.cpp by outputting to the window a 'Hello, World!' message.  This will 
+definitely enhance the reader's knowledge of the compilation/linkage process.  Let's keep the same directory, 
+but save this code as Form1a.cpp.  Note I added an 'a' character at the end of the 'Form1' string.....
 
 // Form1a.cpp
 // cl Form1a.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib
@@ -636,32 +666,38 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
 crt_win_a.obj
 user32.lib
 Form1a.obj
-Form1a.obj : error LNK2019: unresolved external symbol __imp_TextOutA referenced in function "__int64 __cdecl 
-fnWndProc(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?fnWndProc@@YA_JPEAUHWND__@@I_K_J@Z)
+Form1a.obj : error LNK2019: unresolved external symbol __imp_TextOutA referenced in function "__int64 
+__cdecl 
+fnWndProc(struct HWND__ *,unsigned int,unsigned __int64,__int64)" 
+(?fnWndProc@@YA_JPEAUHWND__@@I_K_J@Z)
 Form1a.exe : fatal error LNK1120: 1 unresolved externals
 
 C:\Code\VStudio\Forms\Form1>
 
-Uh Oh!  We've got a problem!  Didn't I tell you that you WOULD encounter this?  And that it wouldn't make you happy?  That is one 
-ugly error message and output screen, isn't it?  And like I said, there is no line number in the error message telling you
-where in your source the error is located.  But if you understand the compilation/linkage process, you understand that the linker
-can't tell you where in the source code the error lies, because it isn't working with textural source but rather with binary
-object and library code.  What happened above is the compiler 'read in' the contents of Windows.h header and found prototypes, 
-i.e., function definitions, for all of the Windows Api functions which it found in the Form1a source above.  When it generated
-object code in Form1a.obj it left 'markers', technically termed in compiler writer's parlance 'fixups', which it delegated
-to the linker to resolve.  Meaning, it was left up to the linker to find the binary object or library code to pull into the
-executable it was tasked to create.  The compiler had done all it could.  It found that the code in Form1a.cpp was syntactilly 
-correct in terms of C++ usage, and it found syntactilly correct function prototypes for all the external functions referenced
-in Form1a.cpp.  It created all the object code it could, then passed on execution to the linker to find the missing object
-code for the external functions.
+Uh Oh!  We've got a problem!  Didn't I tell you that you WOULD encounter this?  And that it wouldn't make 
+you happy?  That is one ugly error message and output screen, isn't it?  And like I said, there is no line 
+number in the error message telling you where in your source the error is located.  But if you understand the 
+compilation/linkage process, you understand that the linker can't tell you where in the source code the error 
+lies, because it isn't working with textural source but rather with binary object and library code.  What 
+happened above is the compiler 'read in' the contents of Windows.h header and found prototypes, i.e., 
+function definitions, for all of the Windows Api functions which it found in the Form1a source above.  When 
+it generated object code in Form1a.obj it left 'markers', technically termed in compiler writer's parlance 
+'fixups', which it delegated to the linker to resolve.  Meaning, it was left up to the linker to find the binary 
+object or library code to pull into the executable it was tasked to create.  The compiler had done all it could.  
+It found that the code in Form1a.cpp was syntactically correct in terms of C++ usage, and it found 
+syntactically correct function prototypes for all the external functions referenced in Form1a.cpp.  It created 
+all the object code it could, then passed on execution to the linker to find the missing object code for the 
+external functions.
 
-So the linker is aware that in the CRT Start Up routine the Default Library was set to Kernel32.lib and LIBC and LIBCMT were
-disallowed.  So the linker would have looked in kernel32.lib for binary code for BeginPaint(), TextOut(), and EndPaint().  But
-it would not have found those functions there, as that essential Windows library contains entirely non-GUI related functions,
-such as tasking, memory management, threading, etc.  So the linker's other option would have been to look in the user32.lib
-provided in the command line string for the above three functions.  It would have found BeginPaint() and EndPaint() there,
-but not TextOut(). The reason it didn't find TextOut() there is because that functions IS NOT THERE!  It is in another essential 
-Windows Library named gdi32.lib!  You can easily prove that to yourself.  Simply bring up TextOut in MSDN documentation....
+So the linker is aware that in the CRT Start Up routine the Default Library was set to Kernel32.lib and LIBC 
+and LIBCMT were disallowed.  So the linker would have looked in kernel32.lib for binary code for 
+BeginPaint(), TextOut(), and EndPaint().  But it would not have found those functions there, as that essential 
+Windows library contains entirely non-GUI related functions, such as tasking, memory management, 
+threading, etc.  So the linker's other option would have been to look in the user32.lib provided in the 
+command line string for the above three functions.  It would have found BeginPaint() and EndPaint() there,
+but not TextOut(). The reason it didn't find TextOut() there is because that functions IS NOT THERE!  It is 
+in another essential Windows Library named gdi32.lib!  You can easily prove that to yourself.  Simply bring 
+up TextOut in MSDN documentation....
 
 https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-textouta
 
@@ -669,11 +705,11 @@ https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-textouta
 
 Requirements
 ....
-Library 	Gdi32.lib
 ....
+Library 	Gdi32.lib
 
-This pretty much suggests an easy fix to our problem, doesn't it?  Just add gdi32.lib at the end of our compilation string, not?
-So let's try again with this string....
+This pretty much suggests an easy fix to our problem, doesn't it?  Just add gdi32.lib at the end of our 
+compilation string, not?  So let's try again with this string....
 
 cl Form1a.cpp /O1 /Os /GS- /link crt_win_a.obj user32.lib gdi32.lib
 
